@@ -1,5 +1,5 @@
 import React from 'react';
-import { InicioSesion } from './components/InicioSesion.jsx';
+import { InicioSesion } from './components/InicioSesion';
 
 const App = () => {
   return (
