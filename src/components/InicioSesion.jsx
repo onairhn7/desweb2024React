@@ -1,72 +1,83 @@
-import React from 'react'
+import { useState } from "react";
+import axios from 'axios';
 
 
 export const InicioSesion = () => {
+
+    const [dataForm, setDataForm] = useState({
+        nombre_usuario: "",
+        pass: ""
+    });
+
+    const [InicioSesion, setInicioSesion] = useState("");
+
+    const onChangeHandler = (event) => {
+
+        const { name, value } = event.target;
+
+        setDataForm({ ...dataForm, [name]: value });
+
+
+
+    }
+
+
+
+    const submitHandler = async () => {
+
+        event.preventDefault();
+
+        const url = `http://localhost:4500/api/usuario/auth/${dataForm.nombre_usuario}/${dataForm.pass}`;
+
+
+
+
+
+        try {
+            const result = await axios.get(url);
+            const resultData = (await result).data;
+            setInicioSesion("inicio de Sesion Exitoso")
+
+
+        } catch (err) {
+
+            setInicioSesion("erroeno")
+        }
+
+    }
+
+
     return (
+
         <>
             <div className='container mt-5'>
 
-            <form>
-                <fieldset>
-                    <legend>Registro de Usuarios</legend>
+                <form onSubmit={submitHandler} >
+                    <fieldset>
+                        <legend>Inicio Sesion</legend>
 
-                    <div class="row">
-                        <label for="staticNombreUsuario" class="col-sm-2 col-form-label">Nombre Usuario</label>
-                        <div class="col-sm-10">
-                            <input type="text" readonly="" class="form-control-plaintext" id="staticNombreUsuario" placeholder="Seleccione su Usuario" />
+                        <div className="row">
+                            <label className="col-sm-2 col-form-label">Usuario</label>
+                            <div className="col-sm-10">
+                                <input type="text" className="form-control-plaintext" name="nombre_usuario" onChange={onChangeHandler} />
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-                        <div class="col-sm-10">
-                            <input type="text" readonly="" class="form-control-plaintext" id="staticEmail" placeholder="email@example.com" />
+                        <div className="row">
+                            <label className="col-sm-2 col-form-label">Contrasena</label>
+                            <div className="col-sm-10">
+                                <input type="password" className="form-control-plaintext" name="pass" onChange={onChangeHandler} />
+                            </div>
                         </div>
-                    </div>
-
-                    
-
-                    <div class="row">
-                        <label for="staticNombre" class="col-sm-2 col-form-label">Nombre</label>
-                        <div class="col-sm-10">
-                            <input type="text" readonly="" class="form-control-plaintext" id="staticNombre" placeholder="Escribe tu nombre" />
-                        </div>
-                    </div>
-
-                    
-
-                    <div class="row">
-                        <label for="staticApellido" class="col-sm-2 col-form-label">Apellido</label>
-                        <div class="col-sm-10">
-                            <input type="text" readonly="" class="form-control-plaintext" id="staticApellido" placeholder="Ingrese su Apellido" />
-                        </div>
-                    </div>
 
 
-                    <div class="row">
-                        <label for="staticConstrasena" class="col-sm-2 col-form-label">Contrasena</label>
-                        <div class="col-sm-10">
-                            <input type="text" readonly="" class="form-control-plaintext" id="staticConstrasena" placeholder="Ingrese su Contrasena" />
-                        </div>
-                    </div>
-
-
-                    <div class="row">
-                        <label for="staticConfirmacionCon" class="col-sm-2 col-form-label">Contrasena</label>
-                        <div class="col-sm-10">
-                            <input type="text" readonly="" class="form-control-plaintext" id="staticConfirmacionCon" placeholder="Confirme su Contrasena" />
-                        </div>
-                    </div>
-
-
-                    
-
-                    <button type="submit" class="btn btn-primary w-100">Crear Usuario</button>
-                </fieldset>
-            </form>
+                        <button type="submit" className="btn btn-primary w-100">Iniciar Sesion</button>
+                    </fieldset>
+                </form>
+                <div>{InicioSesion}</div>
             </div>
-
         </>
     )
-}
 
+
+}
